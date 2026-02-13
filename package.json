@@ -1,7 +1,6 @@
 {
   "name": "qurangenerator1.3",
   "homepage": "https://github.com/teguhrachmadi1206-png/Al-Quran-Random-Ayah-Generator-v1.3",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
