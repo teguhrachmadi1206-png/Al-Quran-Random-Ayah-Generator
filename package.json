@@ -1,5 +1,6 @@
 {
   "name": "qurangenerator1.3",
+  "homepage": "https://github.com/teguhrachmadi1206-png/Al-Quran-Random-Ayah-Generator-v1.3",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,10 +8,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@types/react-transition-group": "^4.4.12",
+    "gh-pages": "^6.3.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
