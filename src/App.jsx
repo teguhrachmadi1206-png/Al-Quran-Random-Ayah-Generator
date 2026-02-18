@@ -98,6 +98,7 @@ function App() {
 
   useEffect(() => {
     if (surahData) {
+      setFirstNumber(1)
       setSecondNumber(surahData.ayahs.length)
     }
   }, [surahData])
@@ -265,6 +266,7 @@ function App() {
           generate={nextNumber}
           repeat={changeNoRepeat}
           numberList={numberList}
+          first={firstNumber}
           second={secondNumber}
           reset={resetState}
           language={language}

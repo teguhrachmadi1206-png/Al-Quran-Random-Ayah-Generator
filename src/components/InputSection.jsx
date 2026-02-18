@@ -14,7 +14,7 @@ export default function InputSection(props) {
                         <option value="" disabled hidden>{text.selectSurah}</option>
                         {surahSelections}
                     </select>
-                    <select type="number" name="first-number" className="input-number input-item" onChange={props.firstNumber}>
+                    <select type="number" name="first-number" className="input-number input-item" onChange={props.firstNumber} value={props.first}>
                         {ayahNumberList}
                     </select>
                     <select type="number" name="second-number" className="input-number input-item" onChange={props.secondNumber} value={props.second}>
