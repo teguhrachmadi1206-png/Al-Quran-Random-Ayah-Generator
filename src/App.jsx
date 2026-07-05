@@ -10,7 +10,7 @@ function App() {
   const [language, setLanguage] = useState("indonesia")
   const [allQuranData, setAllQuranData] = useState(null)
   const [surahData, setSurahData] = useState(null)
-  const [chosenSurah, setChosenSurah] = useState(null)
+  const [chosenSurah, setChosenSurah] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [currentNumber, setCurrentNumber] = useState(null)
   const [numberList, setNumberList] = useState([])

@@ -1,18 +1,18 @@
 import elements from "../language"
 
-export default function Options(props) {
-    const text = elements[props.language]
+export default function Options({ language, close, changeLanguage }) {
+    const text = elements[language]
     return (
         <div className="options-box">
             <div className="options-header">
                 <div className="lang-container">
-                    <label htmlFor="">{text.language}</label>
-                    <select name="language" id="select-lang" className="select-lang" onChange={props.changeLanguage} defaultValue={props.language}>
+                    <label htmlFor="select-lang">{text.language}</label>
+                    <select name="language" id="select-lang" className="select-lang" onChange={changeLanguage} defaultValue={language}>
                         <option value="english">English</option>
                         <option value="indonesia">Indonesia</option>
                     </select>
                 </div>
-                <button onClick={props.close} className="main-btn how-to-btn">{text.closeOptions}</button>
+                <button onClick={close} className="main-btn how-to-btn">{text.closeOptions}</button>
             </div>
             <div className="how-to-use-header">
                 <h2 className="how-to-main-header">{text.howToDesc.header}<span>{text.howToDesc.version}</span></h2>
