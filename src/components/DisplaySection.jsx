@@ -5,10 +5,14 @@ export default function DisplaySection(props) {
         ? props.numberList.map((num, index) => <span className="list-number" key={index} value={num} onClick={props.showDetail}>{num}</span>)
         : null
     const text = elements[props.language]
+    const ayahsLeft = props.totalLength - props.numberList.length
 
     return (
         <section className="display-section">
-            <h2 className="sub-title">{text.subTitle2}</h2>
+            <div className="sub-title-row">
+                <h2 className="sub-title">{text.subTitle2}</h2>
+                {props.totalLength > 0 && props.noRepeat && props.numberList.length > 0 && <span>{ayahsLeft} {text.ayahsLeft}</span>}
+            </div>
             <div className="display-number">
                 <div className="display-list">
                     {list}

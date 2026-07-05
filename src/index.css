@@ -200,12 +200,27 @@ main {
   text-shadow: 0 0 0.1em var(--font-shadow-color);
 }
 
+.sub-title-row {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.sub-title-row>span {
+  width: 40%;
+  font-size: 0.8em;
+  color: var(--main-font-color);
+  text-align: right;
+}
+
 .sub-title {
   margin: 0 auto 0.3em auto;
   font-size: var(--sub-title-font-size);
   text-align: left;
-  width: 100%;
+  width: stretch;
   padding: 0 0 0 0.5em;
+  justify-self: start;
 }
 
 section {
@@ -334,6 +349,7 @@ option {
   display: flex;
   justify-content: center;
   margin: 0.5em;
+  gap: 0.5em;
 }
 
 .list-number {

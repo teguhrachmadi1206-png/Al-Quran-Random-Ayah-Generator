@@ -22,6 +22,7 @@ function App() {
   const [firstNumber, setFirstNumber] = useState(1)
   const [secondNumber, setSecondNumber] = useState(1)
   const [noRepeat, setNoRepeat] = useState(true)
+  const [showNextSurahButton, setShowNextSurahButton] = useState(false)
   const listEndRef = useRef(null)
   const arabicStartRef = useRef(null)
   const latinStartRef = useRef(null)
@@ -100,6 +101,7 @@ function App() {
     if (surahData) {
       setFirstNumber(1)
       setSecondNumber(surahData.ayahs.length)
+      setShowNextSurahButton(false)
     }
   }, [surahData])
 
@@ -197,6 +199,9 @@ function App() {
         setCurrentIndex(prev => prev + 1)
       } else {
         setMessage(text.message.noNumber)
+        if (numberList.length === surahData.ayahs.length && Number(chosenSurah) < 114) {
+          setShowNextSurahButton(true)
+        }
       }
     }
     setShowArabic(false)
@@ -250,6 +255,10 @@ function App() {
     resetState()
   }
 
+  function nextSurah() {
+    chooseSurah(Number(chosenSurah) + 1)
+  }
+
   return (
     <>
       <Header
@@ -265,11 +274,14 @@ function App() {
           secondNumber={(e) => chooseSecondNumber(e.currentTarget.value)}
           generate={nextNumber}
           repeat={changeNoRepeat}
+          showNextSurahBtn={showNextSurahButton}
           numberList={numberList}
           first={firstNumber}
           second={secondNumber}
           reset={resetState}
           language={language}
+          nextSurah={nextSurah}
+          chosenSurah={chosenSurah}
         />}
         <DisplaySection
           language={language}
@@ -277,7 +289,9 @@ function App() {
           mainNumber={currentNumber}
           listEnd={listEndRef}
           numberList={numberList}
-          showDetail={(e) => showListDetail(Number(e.currentTarget.textContent))} />
+          showDetail={(e) => showListDetail(Number(e.currentTarget.textContent))}
+          totalLength={generatedList.length}
+          noRepeat={noRepeat} />
         <DetailSection
           surah={surahData}
           number={currentNumber}

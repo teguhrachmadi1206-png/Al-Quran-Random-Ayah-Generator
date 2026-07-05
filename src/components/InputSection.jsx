@@ -5,12 +5,16 @@ export default function InputSection(props) {
     const ayahNumberList = props.surah ? props.surah.ayahs.map(ayah => <option key={ayah.ayahNumber} value={ayah.ayahNumber}>{ayah.ayahNumber}</option>) : null
     const text = elements[props.language]
 
+    function test() {
+        console.log(props.chosenSurah + 1)
+    }
+
     return (
         <section className="input-section">
             <h2 className="sub-title">{text.subTitle1}</h2>
             <div className="input-data">
                 <div className="select-container">
-                    <select name="surah" className="input-item" onChange={props.changeSurah} defaultValue={""}>
+                    <select name="surah" className="input-item" onChange={props.changeSurah} defaultValue={""} value={props.chosenSurah}>
                         <option value="" disabled hidden>{text.selectSurah}</option>
                         {surahSelections}
                     </select>
@@ -32,6 +36,9 @@ export default function InputSection(props) {
                         ? text.generateBtn.next
                         : text.generateBtn.generate
                 }</button>
+                {props.showNextSurahBtn && <button className="main-btn" onClick={props.nextSurah}>
+                    {text.nextSurahBtn}
+                </button>}
             </div>
         </section >
     )
