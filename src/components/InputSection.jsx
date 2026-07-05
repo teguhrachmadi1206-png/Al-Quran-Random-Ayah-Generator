@@ -5,9 +5,9 @@ export default function InputSection({ data, changeSurah, surah, firstNumber, se
     const ayahNumberList = surah ? surah.ayahs.map(ayah => <option key={ayah.ayahNumber} value={ayah.ayahNumber}>{ayah.ayahNumber}</option>) : null
     const text = elements[language]
 
-    function test() {
-        console.log(chosenSurah)
-    }
+    // function test() {
+    //     console.log(chosenSurah)
+    // }
 
     return (
         <section className="input-section">
@@ -40,7 +40,7 @@ export default function InputSection({ data, changeSurah, surah, firstNumber, se
                     {text.nextSurahBtn}
                 </button>}
             </div>
-            <button onClick={test}>TEST</button>
+            {/* <button onClick={test}>TEST</button> */}
         </section >
     )
 }

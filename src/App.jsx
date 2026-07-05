@@ -15,18 +15,12 @@ function App() {
   const [currentNumber, setCurrentNumber] = useState(null)
   const [numberList, setNumberList] = useState([])
   const [message, setMessage] = useState("")
-  const [showArabic, setShowArabic] = useState(false)
-  const [showLatin, setShowLatin] = useState(false)
-  const [showTranslation, setShowTranslation] = useState(false)
   const [showOptions, setShowOptions] = useState(false)
   const [firstNumber, setFirstNumber] = useState(1)
   const [secondNumber, setSecondNumber] = useState(1)
   const [noRepeat, setNoRepeat] = useState(true)
   const [showNextSurahButton, setShowNextSurahButton] = useState(false)
   const listEndRef = useRef(null)
-  const arabicStartRef = useRef(null)
-  const latinStartRef = useRef(null)
-  const translationStartRef = useRef(null)
   const text = elements[language]
 
   let generatedList = useMemo(() => generateNumberList(firstNumber, secondNumber), [firstNumber, secondNumber, chosenSurah])
@@ -121,24 +115,6 @@ function App() {
     }
   }, [numberList])
 
-  useEffect(() => {
-    if (showTranslation) {
-      translationStartRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [showTranslation])
-
-  useEffect(() => {
-    if (showLatin) {
-      latinStartRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [showLatin])
-
-  useEffect(() => {
-    if (showArabic) {
-      arabicStartRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [showArabic])
-
   function chooseSurah(surahNum) {
     setChosenSurah(surahNum)
     resetState()
@@ -159,9 +135,6 @@ function App() {
     setMessage("")
     setNumberList([])
     setCurrentNumber(null)
-    setShowArabic(false)
-    setShowLatin(false)
-    setShowTranslation(false)
   }
 
   function generateNumberList(firstNum, secondNum) {
@@ -203,33 +176,6 @@ function App() {
           setShowNextSurahButton(true)
         }
       }
-    }
-    setShowArabic(false)
-    setShowLatin(false)
-    setShowTranslation(false)
-  }
-
-  function toggleShowArabic() {
-    setShowArabic(prev => !prev)
-  }
-
-  function toggleShowLatin() {
-    setShowLatin(prev => !prev)
-  }
-
-  function toggleShowTranslation() {
-    setShowTranslation(prev => !prev)
-  }
-
-  function toggleShowAll() {
-    if (showArabic || showLatin || showTranslation) {
-      setShowArabic(false)
-      setShowLatin(false)
-      setShowTranslation(false)
-    } else {
-      setShowArabic(true)
-      setShowLatin(true)
-      setShowTranslation(true)
     }
   }
 
@@ -294,18 +240,9 @@ function App() {
           noRepeat={noRepeat} />
         <DetailSection
           surah={surahData}
-          number={currentNumber}
-          toggleArabic={toggleShowArabic}
-          toggleLatin={toggleShowLatin}
-          toggleTranslation={toggleShowTranslation}
-          toggleAll={toggleShowAll}
-          showArabic={showArabic}
-          showLatin={showLatin}
-          showTranslation={showTranslation}
+          currentNumber={currentNumber}
           language={language}
-          arabicStart={arabicStartRef}
-          latinStart={latinStartRef}
-          translationStart={translationStartRef} />
+        />
         {showOptions && <Options
           language={language}
           changeLanguage={(e) => setLanguage(e.currentTarget.value)}
