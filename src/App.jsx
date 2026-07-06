@@ -16,11 +16,11 @@ function App() {
   const [numberList, setNumberList] = useState([])
   const [message, setMessage] = useState("")
   const [showOptions, setShowOptions] = useState(false)
+  const [showAyahDetails, setShowAyahDetails] = useState(false)
   const [firstNumber, setFirstNumber] = useState(1)
   const [secondNumber, setSecondNumber] = useState(1)
   const [noRepeat, setNoRepeat] = useState(true)
   const [showNextSurahButton, setShowNextSurahButton] = useState(false)
-  const listEndRef = useRef(null)
   const text = elements[language]
 
   let generatedList = useMemo(() => generateNumberList(firstNumber, secondNumber), [firstNumber, secondNumber, chosenSurah])
@@ -109,12 +109,6 @@ function App() {
     }
   }, [message])
 
-  useEffect(() => {
-    if (numberList.length) {
-      listEndRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [numberList])
-
   function chooseSurah(surahNum) {
     setChosenSurah(surahNum)
     resetState()
@@ -177,22 +171,17 @@ function App() {
         }
       }
     }
+    setShowAyahDetails(false)
   }
 
   function showListDetail(id) {
-    if (id === currentNumber && showArabic && showLatin && showTranslation) {
-      setShowArabic(false)
-      setShowLatin(false)
-      setShowTranslation(false)
-    } else if (id === currentNumber && !showArabic && !showLatin && !showTranslation) {
-      setShowArabic(true)
-      setShowLatin(true)
-      setShowTranslation(true)
+    if (id === currentNumber && showAyahDetails) {
+      setShowAyahDetails(false)
+    } else if (id === currentNumber && !showAyahDetails) {
+      setShowAyahDetails(true)
     } else {
       setCurrentNumber(id)
-      setShowArabic(true)
-      setShowLatin(true)
-      setShowTranslation(true)
+      setShowAyahDetails(true)
     }
   }
 
@@ -212,41 +201,44 @@ function App() {
         showOptions={() => setShowOptions(prev => !prev)}
       />
       <main>
-        {allQuranData && <InputSection
-          data={allQuranData}
-          changeSurah={(e) => chooseSurah(e.currentTarget.value)}
-          surah={surahData}
-          firstNumber={(e) => chooseFirstNumber(e.currentTarget.value)}
-          secondNumber={(e) => chooseSecondNumber(e.currentTarget.value)}
-          generate={nextNumber}
-          repeat={changeNoRepeat}
-          showNextSurahBtn={showNextSurahButton}
-          numberList={numberList}
-          first={firstNumber}
-          second={secondNumber}
-          reset={resetState}
-          language={language}
-          nextSurah={nextSurah}
-          chosenSurah={chosenSurah}
-        />}
+        {allQuranData &&
+          <InputSection
+            data={allQuranData}
+            changeSurah={(e) => chooseSurah(e.currentTarget.value)}
+            surah={surahData}
+            firstNumber={(e) => chooseFirstNumber(e.currentTarget.value)}
+            secondNumber={(e) => chooseSecondNumber(e.currentTarget.value)}
+            generate={nextNumber}
+            repeat={changeNoRepeat}
+            showNextSurahBtn={showNextSurahButton}
+            numberList={numberList}
+            first={firstNumber}
+            second={secondNumber}
+            reset={resetState}
+            language={language}
+            nextSurah={nextSurah}
+            chosenSurah={chosenSurah}
+          />}
         <DisplaySection
           language={language}
-          message={message}
           mainNumber={currentNumber}
-          listEnd={listEndRef}
           numberList={numberList}
           showDetail={(e) => showListDetail(Number(e.currentTarget.textContent))}
           totalLength={generatedList.length}
-          noRepeat={noRepeat} />
+          noRepeat={noRepeat}
+        />
         <DetailSection
           surah={surahData}
           currentNumber={currentNumber}
           language={language}
+          showAyahDetails={showAyahDetails}
+          setShowAyahDetails={setShowAyahDetails}
         />
         {showOptions && <Options
           language={language}
           changeLanguage={(e) => setLanguage(e.currentTarget.value)}
           close={() => setShowOptions(false)} />}
+        {message && <p className="message">{message}</p>}
       </main >
     </>
   )

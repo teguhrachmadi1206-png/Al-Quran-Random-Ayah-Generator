@@ -1,7 +1,7 @@
 import elements from "../language"
 import { useState, useRef, useEffect } from "react"
 
-export default function DetailSection({ surah, currentNumber, language }) {
+export default function DetailSection({ surah, currentNumber, language, showAyahDetails, setShowAyahDetails }) {
     const text = elements[language]
     const [showArabic, setShowArabic] = useState(false)
     const [showLatin, setShowLatin] = useState(false)
@@ -29,10 +29,16 @@ export default function DetailSection({ surah, currentNumber, language }) {
     }, [showArabic])
 
     useEffect(() => {
-        setShowArabic(false)
-        setShowLatin(false)
-        setShowTranslation(false)
-    }, [currentNumber])
+        if (showAyahDetails) {
+            setShowArabic(true)
+            setShowLatin(true)
+            setShowTranslation(true)
+        } else {
+            setShowArabic(false)
+            setShowLatin(false)
+            setShowTranslation(false)
+        }
+    }, [showAyahDetails, currentNumber])
 
     function toggleShowArabic() {
         if (currentNumber) {
@@ -58,6 +64,7 @@ export default function DetailSection({ surah, currentNumber, language }) {
                 setShowArabic(false)
                 setShowLatin(false)
                 setShowTranslation(false)
+                setShowAyahDetails(false)
             } else {
                 setShowArabic(true)
                 setShowLatin(true)

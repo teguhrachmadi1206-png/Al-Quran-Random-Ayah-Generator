@@ -1,11 +1,19 @@
 import elements from "../language"
+import { useRef, useEffect } from "react"
 
-export default function DisplaySection({ numberList, showDetail, totalLength, noRepeat, listEnd, mainNumber, message, language }) {
+export default function DisplaySection({ numberList, showDetail, totalLength, noRepeat, mainNumber, language }) {
     const list = numberList
         ? numberList.map((num, index) => <span className="list-number" key={index} value={num} onClick={showDetail}>{num}</span>)
         : null
     const text = elements[language]
     const ayahsLeft = totalLength - numberList.length
+    const listEndRef = useRef(null)
+
+    useEffect(() => {
+        if (numberList.length) {
+            listEndRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [numberList])
 
     return (
         <section className="display-section">
@@ -16,10 +24,9 @@ export default function DisplaySection({ numberList, showDetail, totalLength, no
             <div className="display-number">
                 <div className="display-list">
                     {list}
-                    <span ref={listEnd}></span>
+                    <span ref={listEndRef}></span>
                 </div>
                 <h2 className="main-number">{mainNumber}</h2>
-                {message && <p className="message">{message}</p>}
             </div>
         </section>
     )
