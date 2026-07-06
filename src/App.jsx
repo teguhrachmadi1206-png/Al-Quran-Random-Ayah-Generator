@@ -218,6 +218,7 @@ function App() {
             language={language}
             nextSurah={nextSurah}
             chosenSurah={chosenSurah}
+            showNextSurahBtn={showNextSurahButton}
           />}
         <DisplaySection
           language={language}
