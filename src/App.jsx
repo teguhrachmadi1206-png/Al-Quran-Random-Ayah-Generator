@@ -11,19 +11,20 @@ function App() {
   const [allQuranData, setAllQuranData] = useState(null)
   const [surahData, setSurahData] = useState(null)
   const [chosenSurah, setChosenSurah] = useState(0)
-  const [currentIndex, setCurrentIndex] = useState(0)
+  // const [currentIndex, setCurrentIndex] = useState(0)
   const [currentNumber, setCurrentNumber] = useState(null)
   const [numberList, setNumberList] = useState([])
   const [message, setMessage] = useState("")
   const [showOptions, setShowOptions] = useState(false)
   const [showAyahDetails, setShowAyahDetails] = useState(false)
+  const [showNextSurahButton, setShowNextSurahButton] = useState(false)
+  const [generatedList, setGeneratedList] = useState([])
   const [firstNumber, setFirstNumber] = useState(1)
   const [secondNumber, setSecondNumber] = useState(1)
   const [noRepeat, setNoRepeat] = useState(true)
-  const [showNextSurahButton, setShowNextSurahButton] = useState(false)
   const text = elements[language]
 
-  let generatedList = useMemo(() => generateNumberList(firstNumber, secondNumber), [firstNumber, secondNumber, chosenSurah])
+  // let generatedList = useMemo(() => generateNumberList(firstNumber, secondNumber), [firstNumber, secondNumber, chosenSurah])
 
   useEffect(() => {
     if (language === "english") {
@@ -125,54 +126,54 @@ function App() {
   }
 
   function resetState() {
-    setCurrentIndex(0)
+    // setCurrentIndex(0)
     setMessage("")
     setNumberList([])
     setCurrentNumber(null)
   }
 
-  function generateNumberList(firstNum, secondNum) {
-    if (secondNum <= firstNum) {
-      return []
-    }
-    const randomList = []
-    const length = secondNum - firstNum + 1
-    while (randomList.length !== length) {
-      const random = Math.floor(Math.random() * (secondNum - firstNum + 1) + firstNum)
-      if (!randomList.includes(random)) {
-        randomList.push(random)
-      }
-    }
-    return randomList
-  }
+  // function generateNumberList(firstNum, secondNum) {
+  //   if (secondNum <= firstNum) {
+  //     return []
+  //   }
+  //   const randomList = []
+  //   const length = secondNum - firstNum + 1
+  //   while (randomList.length !== length) {
+  //     const random = Math.floor(Math.random() * (secondNum - firstNum + 1) + firstNum)
+  //     if (!randomList.includes(random)) {
+  //       randomList.push(random)
+  //     }
+  //   }
+  //   return randomList
+  // }
 
-  function nextNumber() {
-    if (!chosenSurah) {
-      setMessage(text.message.chooseSurah)
-      return
-    }
-    if (!generatedList.length) {
-      setMessage(text.message.invalidNumber)
-      return
-    }
-    if (!noRepeat) {
-      const randomIndex = Math.floor(Math.random() * generatedList.length)
-      setCurrentNumber(generatedList[randomIndex])
-      setNumberList(prevList => [...prevList, generatedList[randomIndex]])
-    } else {
-      if (currentIndex !== generatedList.length) {
-        setCurrentNumber(generatedList[currentIndex])
-        setNumberList(prevList => [...prevList, generatedList[currentIndex]])
-        setCurrentIndex(prev => prev + 1)
-      } else {
-        setMessage(text.message.noNumber)
-        if (numberList.length === surahData.ayahs.length && Number(chosenSurah) < 114) {
-          setShowNextSurahButton(true)
-        }
-      }
-    }
-    setShowAyahDetails(false)
-  }
+  // function nextNumber() {
+  //   if (!chosenSurah) {
+  //     setMessage(text.message.chooseSurah)
+  //     return
+  //   }
+  //   if (!generatedList.length) {
+  //     setMessage(text.message.invalidNumber)
+  //     return
+  //   }
+  //   if (!noRepeat) {
+  //     const randomIndex = Math.floor(Math.random() * generatedList.length)
+  //     setCurrentNumber(generatedList[randomIndex])
+  //     setNumberList(prevList => [...prevList, generatedList[randomIndex]])
+  //   } else {
+  //     if (currentIndex !== generatedList.length) {
+  //       setCurrentNumber(generatedList[currentIndex])
+  //       setNumberList(prevList => [...prevList, generatedList[currentIndex]])
+  //       setCurrentIndex(prev => prev + 1)
+  //     } else {
+  //       setMessage(text.message.noNumber)
+  //       if (numberList.length === surahData.ayahs.length && Number(chosenSurah) < 114) {
+  //         setShowNextSurahButton(true)
+  //       }
+  //     }
+  //   }
+  //   setShowAyahDetails(false)
+  // }
 
   function showListDetail(id) {
     if (id === currentNumber && showAyahDetails) {
@@ -206,18 +207,21 @@ function App() {
             data={allQuranData}
             changeSurah={(e) => chooseSurah(e.currentTarget.value)}
             surah={surahData}
-            firstNumber={(e) => chooseFirstNumber(e.currentTarget.value)}
-            secondNumber={(e) => chooseSecondNumber(e.currentTarget.value)}
-            generate={nextNumber}
+            chooseFirstNum={(e) => chooseFirstNumber(e.currentTarget.value)}
+            chooseSecondNum={(e) => chooseSecondNumber(e.currentTarget.value)}
+            setList={setGeneratedList}
+            noRepeat={noRepeat}
             repeat={changeNoRepeat}
-            showNextSurahBtn={showNextSurahButton}
+            setNumberList={setNumberList}
             numberList={numberList}
-            first={firstNumber}
-            second={secondNumber}
-            reset={resetState}
+            firstNum={firstNumber}
+            secondNum={secondNumber}
             language={language}
             nextSurah={nextSurah}
             chosenSurah={chosenSurah}
+            showNextSurahButton={showNextSurahButton}
+            setMessage={setMessage}
+            setCurrentNumber={setCurrentNumber}
           />}
         <DisplaySection
           language={language}

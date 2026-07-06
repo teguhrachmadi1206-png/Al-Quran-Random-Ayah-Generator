@@ -1,21 +1,63 @@
 import elements from "../language"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 
-export default function InputSection({ data, changeSurah, surah, firstNumber, secondNumber, generate, repeat, numberList, first, second, reset, language, nextSurah, chosenSurah }) {
+export default function InputSection({ setCurrentNumber, setNumberList, list, setList, noRepeat, setMessage, showNextSurahButton, data, changeSurah, surah, chooseFirstNum, chooseSecondNum, generate, repeat, numberList, firstNum, secondNum, language, nextSurah, chosenSurah }) {
     const surahSelections = data.map(surah => <option key={surah.number} value={surah.number}>{surah.number}. {surah.title}</option>)
     const ayahNumberList = surah ? surah.ayahs.map(ayah => <option key={ayah.ayahNumber} value={ayah.ayahNumber}>{ayah.ayahNumber}</option>) : null
     const text = elements[language]
-    const [showNextSurahButton, setShowNextSurahButton] = useState(false)
+    const [currentIndex, setCurrentIndex] = useState(0)
+    let generatedList = useMemo(() => generateNumberList(firstNum, secondNum), [firstNum, secondNum, chosenSurah])
 
     useEffect(() => {
-        if (surah) {
-            setShowNextSurahButton(false)
-        }
-    }, [surah])
+        setList(generatedList)
+    }, [generatedList])
 
-    // function test() {
-    //     console.log(chosenSurah)
-    // }
+    function generateNumberList(firstNum, secondNum) {
+        if (secondNum <= firstNum) {
+            return []
+        }
+        const randomList = []
+        const length = secondNum - firstNum + 1
+        while (randomList.length !== length) {
+            const random = Math.floor(Math.random() * (secondNum - firstNum + 1) + firstNum)
+            if (!randomList.includes(random)) {
+                randomList.push(random)
+            }
+        }
+        return randomList
+    }
+
+    function nextNumber() {
+        if (!chosenSurah) {
+            setMessage(text.message.chooseSurah)
+            return
+        }
+        if (!generatedList.length) {
+            setMessage(text.message.invalidNumber)
+            return
+        }
+        if (!noRepeat) {
+            const randomIndex = Math.floor(Math.random() * generatedList.length)
+            setCurrentNumber(generatedList[randomIndex])
+            setNumberList(prevList => [...prevList, generatedList[randomIndex]])
+        } else {
+            if (currentIndex !== generatedList.length) {
+                setCurrentNumber(generatedList[currentIndex])
+                setNumberList(prevList => [...prevList, generatedList[currentIndex]])
+                setCurrentIndex(prev => prev + 1)
+            } else {
+                setMessage(text.message.noNumber)
+                if (numberList.length === surahData.ayahs.length && Number(chosenSurah) < 114) {
+                    setShowNextSurahButton(true)
+                }
+            }
+        }
+        setShowAyahDetails(false)
+    }
+
+    function test() {
+        console.log("numberList")
+    }
 
     return (
         <section className="input-section">
@@ -26,10 +68,10 @@ export default function InputSection({ data, changeSurah, surah, firstNumber, se
                         <option value={0} disabled hidden>{text.selectSurah}</option>
                         {surahSelections}
                     </select>
-                    <select type="number" name="first-number" className="input-number input-item" onChange={firstNumber} value={first}>
+                    <select type="number" name="first-number" className="input-number input-item" onChange={chooseFirstNum} value={firstNum}>
                         {ayahNumberList}
                     </select>
-                    <select type="number" name="second-number" className="input-number input-item" onChange={secondNumber} value={second}>
+                    <select type="number" name="second-number" className="input-number input-item" onChange={chooseSecondNum} value={secondNum}>
                         {ayahNumberList}
                     </select>
                 </div>
@@ -39,7 +81,7 @@ export default function InputSection({ data, changeSurah, surah, firstNumber, se
                 </div>
             </div>
             <div className="buttons">
-                <button className="main-btn" onClick={generate}>{
+                <button className="main-btn" onClick={nextNumber}>{
                     numberList.length
                         ? text.generateBtn.next
                         : text.generateBtn.generate
@@ -48,7 +90,7 @@ export default function InputSection({ data, changeSurah, surah, firstNumber, se
                     {text.nextSurahBtn}
                 </button>}
             </div>
-            {/* <button onClick={test}>TEST</button> */}
+            <button onClick={test}>TESTA</button>
         </section >
     )
 }
