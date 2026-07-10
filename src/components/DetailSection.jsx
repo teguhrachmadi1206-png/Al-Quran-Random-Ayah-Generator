@@ -19,6 +19,7 @@ export default function DetailSection(
     const translationStartRef = useRef(null)
     const audioRef = useRef(null)
     const audioSrc = currentNumber && surahData && surahData.ayahs[currentNumber - 1].ayahAudio
+    const formattedArabic = currentNumber && surahData && surahData.ayahs[currentNumber - 1].ayahArabic.replaceAll("۞", "").replaceAll("۩", "")
 
     useEffect(() => {
         if (showTranslation) {
@@ -119,7 +120,7 @@ export default function DetailSection(
                     </div>
                     {currentNumber && <div className="show-ayah">
                         <span ref={arabicStartRef}></span>
-                        {showArabic && <p className="arabic-ayah" >{surahData.ayahs[currentNumber - 1].ayahArabic}</p>}
+                        {showArabic && <p className="arabic-ayah" >{formattedArabic}</p>}
                         <span ref={latinStartRef}></span>
                         {showLatin && <p className="latin-ayah" >{surahData.ayahs[currentNumber - 1].ayahLatin} ({currentNumber})</p>}
                         <span ref={translationStartRef}></span>
