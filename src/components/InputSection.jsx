@@ -1,7 +1,24 @@
 import elements from "../language"
 import { useState, useEffect } from "react"
 
-export default function InputSection({ data, changeSurah, surah, firstNumber, secondNumber, generate, repeat, numberList, first, second, reset, language, nextSurah, chosenSurah, showNextSurahBtn }) {
+export default function InputSection(
+    {
+        data,
+        changeSurah,
+        surah,
+        firstNumber,
+        secondNumber,
+        generate,
+        repeat,
+        numberList,
+        first,
+        second,
+        reset,
+        language,
+        nextSurah,
+        chosenSurah,
+        showNextSurahBtn,
+    }) {
     const surahSelections = data.map(surah => <option key={surah.number} value={surah.number}>{surah.number}. {surah.title}</option>)
     const ayahNumberList = surah ? surah.ayahs.map(ayah => <option key={ayah.ayahNumber} value={ayah.ayahNumber}>{ayah.ayahNumber}</option>) : null
     const text = elements[language]

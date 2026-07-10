@@ -21,6 +21,7 @@ function App() {
   const [secondNumber, setSecondNumber] = useState(1)
   const [noRepeat, setNoRepeat] = useState(true)
   const [showNextSurahButton, setShowNextSurahButton] = useState(false)
+  const [detailShowed, setDetailShowed] = useState({ arabic: false, latin: false, translation: false })
   const text = elements[language]
 
   let generatedList = useMemo(() => generateNumberList(firstNumber, secondNumber), [firstNumber, secondNumber, chosenSurah])
@@ -129,6 +130,11 @@ function App() {
     setMessage("")
     setNumberList([])
     setCurrentNumber(null)
+    setDetailShowed({
+      arabic: false,
+      latin: false,
+      translation: false
+    })
   }
 
   function generateNumberList(firstNum, secondNum) {
@@ -171,18 +177,11 @@ function App() {
         }
       }
     }
-    setShowAyahDetails(false)
-  }
-
-  function showListDetail(id) {
-    if (id === currentNumber && showAyahDetails) {
-      setShowAyahDetails(false)
-    } else if (id === currentNumber && !showAyahDetails) {
-      setShowAyahDetails(true)
-    } else {
-      setCurrentNumber(id)
-      setShowAyahDetails(true)
-    }
+    setDetailShowed({
+      arabic: false,
+      latin: false,
+      translation: false
+    })
   }
 
   function changeNoRepeat() {
@@ -222,9 +221,11 @@ function App() {
           />}
         <DisplaySection
           language={language}
-          mainNumber={currentNumber}
+          currentNumber={currentNumber}
           numberList={numberList}
-          showDetail={(e) => showListDetail(Number(e.currentTarget.textContent))}
+          detailShowed={detailShowed}
+          setDetailShowed={setDetailShowed}
+          setCurrentNumber={setCurrentNumber}
           totalLength={generatedList.length}
           noRepeat={noRepeat}
         />
@@ -232,8 +233,8 @@ function App() {
           surah={surahData}
           currentNumber={currentNumber}
           language={language}
-          showAyahDetails={showAyahDetails}
-          setShowAyahDetails={setShowAyahDetails}
+          detailShowed={detailShowed}
+          setDetailShowed={setDetailShowed}
         />
         {showOptions && <Options
           language={language}

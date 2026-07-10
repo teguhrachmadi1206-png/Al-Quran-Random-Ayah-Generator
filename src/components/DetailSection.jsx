@@ -1,11 +1,18 @@
 import elements from "../language"
 import { useState, useRef, useEffect } from "react"
 
-export default function DetailSection({ surah, currentNumber, language, showAyahDetails, setShowAyahDetails }) {
+export default function DetailSection(
+    {
+        surah,
+        currentNumber,
+        language,
+        detailShowed,
+        setDetailShowed
+    }) {
     const text = elements[language]
-    const [showArabic, setShowArabic] = useState(false)
-    const [showLatin, setShowLatin] = useState(false)
-    const [showTranslation, setShowTranslation] = useState(false)
+    const showArabic = detailShowed.arabic
+    const showLatin = detailShowed.latin
+    const showTranslation = detailShowed.translation
     const arabicStartRef = useRef(null)
     const latinStartRef = useRef(null)
     const translationStartRef = useRef(null)
@@ -28,47 +35,47 @@ export default function DetailSection({ surah, currentNumber, language, showAyah
         }
     }, [showArabic])
 
-    useEffect(() => {
-        if (showAyahDetails) {
-            setShowArabic(true)
-            setShowLatin(true)
-            setShowTranslation(true)
-        } else {
-            setShowArabic(false)
-            setShowLatin(false)
-            setShowTranslation(false)
-        }
-    }, [showAyahDetails, currentNumber])
-
     function toggleShowArabic() {
         if (currentNumber) {
-            setShowArabic(prev => !prev)
+            setDetailShowed(prev => ({
+                ...prev,
+                arabic: !prev.arabic
+            }))
         }
     }
 
     function toggleShowLatin() {
         if (currentNumber) {
-            setShowLatin(prev => !prev)
+            setDetailShowed(prev => ({
+                ...prev,
+                latin: !prev.latin
+            }))
         }
     }
 
     function toggleShowTranslation() {
         if (currentNumber) {
-            setShowTranslation(prev => !prev)
+            setDetailShowed(prev => ({
+                ...prev,
+                translation: !prev.translation
+            }))
         }
     }
 
     function toggleShowAll() {
         if (currentNumber) {
             if (showArabic || showLatin || showTranslation) {
-                setShowArabic(false)
-                setShowLatin(false)
-                setShowTranslation(false)
-                setShowAyahDetails(false)
+                setDetailShowed({
+                    arabic: false,
+                    latin: false,
+                    translation: false
+                })
             } else {
-                setShowArabic(true)
-                setShowLatin(true)
-                setShowTranslation(true)
+                setDetailShowed({
+                    arabic: true,
+                    latin: true,
+                    translation: true
+                })
             }
         }
     }
