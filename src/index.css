@@ -205,6 +205,7 @@ main {
   display: flex;
   justify-content: start;
   align-items: center;
+  margin-bottom: 0.5em;
 }
 
 .sub-title-row>span {
@@ -414,12 +415,10 @@ label {
 }
 
 .detail-title {
-  margin: 0 0 20px 0;
   color: var(--main-font-color);
   text-shadow: 0 0 0.2em var(--font-shadow-color);
   text-align: start;
   font-size: var(--text-font-size);
-  margin-bottom: 1em;
 }
 
 .arabic-ayah {
@@ -443,6 +442,34 @@ label {
   font-weight: normal;
   text-align: start;
   margin-left: 20px;
+}
+
+.detail-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5em 0 1em 0;
+  position: relative;
+}
+
+.audio-button {
+  width: 6em;
+  height: 2.2em;
+  border: 1px double var(--secondary-button-color);
+  background-color: var(--background-color2);
+  color: var(--main-font-color);
+  padding: 0.2em;
+  border-radius: 1em;
+  position: absolute;
+  right: 0;
+}
+
+.audio-button:hover {
+  background-color: var(--background-color1);
+}
+
+.audio-button:active {
+  background-color: var(--font-shadow-color);
 }
 
 @media screen and (max-height: 600px) {

@@ -28,7 +28,11 @@ function App() {
         .then(res => res.json())
         .then(data => {
           const numberAndTitle = []
-          data.data.forEach(surah => numberAndTitle.push({ 'number': surah.number, 'title': surah.englishName }))
+          data.data.forEach(surah =>
+            numberAndTitle.push({
+              'number': surah.number,
+              'title': surah.englishName
+            }))
           setAllQuranData(numberAndTitle)
         })
     } else if (language === "indonesia") {
@@ -36,7 +40,11 @@ function App() {
         .then(res => res.json())
         .then(data => {
           const numberAndTitle = []
-          data.data.forEach(surah => numberAndTitle.push({ 'number': surah.nomor, 'title': surah.namaLatin }))
+          data.data.forEach(surah =>
+            numberAndTitle.push({
+              'number': surah.nomor,
+              'title': surah.namaLatin
+            }))
           setAllQuranData(numberAndTitle)
         })
     }
@@ -55,7 +63,8 @@ function App() {
                 'ayahNumber': ayah.numberInSurah,
                 'ayahArabic': ayah.textArabic,
                 'ayahLatin': ayah.textLatin,
-                'ayahTranslation': ayah.textEnglish
+                'ayahTranslation': ayah.textEnglish,
+                'ayahAudio': ayah.audio['05']
               })
             })
             detailSurah['title'] = data.data.englishName
@@ -76,7 +85,8 @@ function App() {
                 'ayahNumber': ayah.nomorAyat,
                 'ayahArabic': ayah.teksArab,
                 'ayahLatin': ayah.teksLatin,
-                'ayahTranslation': ayah.teksIndonesia
+                'ayahTranslation': ayah.teksIndonesia,
+                'ayahAudio': ayah.audio['05']
               })
             })
             detailSurah['title'] = data.data.namaLatin

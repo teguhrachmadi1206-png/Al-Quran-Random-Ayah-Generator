@@ -13,9 +13,11 @@ export default function DetailSection(
     const showArabic = detailShowed.arabic
     const showLatin = detailShowed.latin
     const showTranslation = detailShowed.translation
+    const [isAudioPlayed, setIsAudioPlayed] = useState(false)
     const arabicStartRef = useRef(null)
     const latinStartRef = useRef(null)
     const translationStartRef = useRef(null)
+    const audioRef = useRef(null)
 
     useEffect(() => {
         if (showTranslation) {
@@ -34,6 +36,12 @@ export default function DetailSection(
             arabicStartRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
         }
     }, [showArabic])
+
+    useEffect(() => {
+        if (surah) {
+            setIsAudioPlayed(false)
+        }
+    }, [currentNumber])
 
     function toggleShowArabic() {
         if (currentNumber) {
@@ -80,8 +88,23 @@ export default function DetailSection(
         }
     }
 
+    function toggleAudio() {
+        if (isAudioPlayed) {
+            audioRef.current.pause()
+            audioRef.current.currentTime = 0
+        } else {
+            audioRef.current.play()
+        }
+        setIsAudioPlayed(prev => !prev)
+    }
+
+    function test() {
+        console.log(surah.ayahs[currentNumber - 1])
+    }
+
     return (
         <section className="detail-section">
+            {surah?.ayahs && currentNumber && <audio ref={audioRef} src={surah.ayahs[currentNumber - 1].ayahAudio} onEnded={() => setIsAudioPlayed(false)} />}
             <h2 className="sub-title">{text.subTitle3}</h2>
             <div className="display-ayah">
                 <div className="detail-btn-container">
@@ -91,9 +114,12 @@ export default function DetailSection(
                     <button className="main-btn toggle all" onClick={toggleShowAll}>{(showArabic || showLatin || showTranslation) ? text.showAllBtn.hide : text.showAllBtn.show}</button>
                 </div>
                 {surah && <div className="show-detail">
-                    {(showArabic || showLatin || showTranslation) && <h3 className="detail-title" >
-                        {surah.number}. {surah.title} ({surah.titleTranslation}): {currentNumber}
-                    </h3>}
+                    <div className="detail-title-row">
+                        {(showArabic || showLatin || showTranslation) && <h3 className="detail-title" >
+                            {surah.number}. {surah.title} ({surah.titleTranslation}): {currentNumber}
+                        </h3>}
+                        {currentNumber && showArabic && <button className='audio-button' onClick={toggleAudio}>{isAudioPlayed ? "◼" : "▶"} Audio</button>}
+                    </div>
                     {currentNumber && <div className="show-ayah">
                         <span ref={arabicStartRef}></span>
                         {showArabic && <p className="arabic-ayah" >{surah.ayahs[currentNumber - 1].ayahArabic}</p>}
@@ -104,6 +130,7 @@ export default function DetailSection(
                     </div>}
                 </div>}
             </div>
+            {/* <button onClick={toggleAudio}>test</button> */}
         </section>
     )
 }
