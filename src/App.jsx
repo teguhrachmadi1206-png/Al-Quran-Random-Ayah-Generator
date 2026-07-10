@@ -13,18 +13,14 @@ function App() {
   const [chosenSurah, setChosenSurah] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [currentNumber, setCurrentNumber] = useState(null)
+  const [generatedList, setGeneratedList] = useState([])
   const [numberList, setNumberList] = useState([])
   const [message, setMessage] = useState("")
   const [showOptions, setShowOptions] = useState(false)
-  const [showAyahDetails, setShowAyahDetails] = useState(false)
-  const [firstNumber, setFirstNumber] = useState(1)
-  const [secondNumber, setSecondNumber] = useState(1)
-  const [noRepeat, setNoRepeat] = useState(true)
   const [showNextSurahButton, setShowNextSurahButton] = useState(false)
+  const [noRepeat, setNoRepeat] = useState(true)
   const [detailShowed, setDetailShowed] = useState({ arabic: false, latin: false, translation: false })
   const text = elements[language]
-
-  let generatedList = useMemo(() => generateNumberList(firstNumber, secondNumber), [firstNumber, secondNumber, chosenSurah])
 
   useEffect(() => {
     if (language === "english") {
@@ -93,14 +89,6 @@ function App() {
   }, [chosenSurah, language])
 
   useEffect(() => {
-    if (surahData) {
-      setFirstNumber(1)
-      setSecondNumber(surahData.ayahs.length)
-      setShowNextSurahButton(false)
-    }
-  }, [surahData])
-
-  useEffect(() => {
     if (message) {
       const timer = setTimeout(() => {
         setMessage("")
@@ -109,21 +97,6 @@ function App() {
       return () => clearTimeout(timer)
     }
   }, [message])
-
-  function chooseSurah(surahNum) {
-    setChosenSurah(surahNum)
-    resetState()
-  }
-
-  function chooseFirstNumber(ayahNum) {
-    setFirstNumber(Number(ayahNum))
-    resetState()
-  }
-
-  function chooseSecondNumber(ayahNum) {
-    setSecondNumber(Number(ayahNum))
-    resetState()
-  }
 
   function resetState() {
     setCurrentIndex(0)
@@ -135,21 +108,6 @@ function App() {
       latin: false,
       translation: false
     })
-  }
-
-  function generateNumberList(firstNum, secondNum) {
-    if (secondNum <= firstNum) {
-      return []
-    }
-    const randomList = []
-    const length = secondNum - firstNum + 1
-    while (randomList.length !== length) {
-      const random = Math.floor(Math.random() * (secondNum - firstNum + 1) + firstNum)
-      if (!randomList.includes(random)) {
-        randomList.push(random)
-      }
-    }
-    return randomList
   }
 
   function nextNumber() {
@@ -184,15 +142,6 @@ function App() {
     })
   }
 
-  function changeNoRepeat() {
-    setNoRepeat(prev => !prev)
-    resetState()
-  }
-
-  function nextSurah() {
-    chooseSurah(Number(chosenSurah) + 1)
-  }
-
   return (
     <>
       <Header
@@ -203,21 +152,17 @@ function App() {
         {allQuranData &&
           <InputSection
             data={allQuranData}
-            changeSurah={(e) => chooseSurah(e.currentTarget.value)}
-            surah={surahData}
-            firstNumber={(e) => chooseFirstNumber(e.currentTarget.value)}
-            secondNumber={(e) => chooseSecondNumber(e.currentTarget.value)}
-            generate={nextNumber}
-            repeat={changeNoRepeat}
-            showNextSurahBtn={showNextSurahButton}
+            surahData={surahData}
+            nextNumber={nextNumber}
+            setNoRepeat={setNoRepeat}
             numberList={numberList}
-            first={firstNumber}
-            second={secondNumber}
-            reset={resetState}
+            setGeneratedList={setGeneratedList}
+            resetState={resetState}
             language={language}
-            nextSurah={nextSurah}
             chosenSurah={chosenSurah}
-            showNextSurahBtn={showNextSurahButton}
+            setChosenSurah={setChosenSurah}
+            showNextSurahButton={showNextSurahButton}
+            setShowNextSurahButton={setShowNextSurahButton}
           />}
         <DisplaySection
           language={language}
