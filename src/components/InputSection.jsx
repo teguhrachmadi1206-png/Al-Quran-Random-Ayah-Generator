@@ -15,7 +15,8 @@ export default function InputSection(
         chosenSurah,
         setChosenSurah,
         showNextSurahButton,
-        setShowNextSurahButton
+        setShowNextSurahButton,
+        isFetching,
     }) {
     const surahSelections = data.map(surah => <option key={surah.number} value={surah.number}>{surah.number}. {surah.title}</option>)
     const ayahNumberList = surahData ? surahData.ayahs.map(ayah => <option key={ayah.ayahNumber} value={ayah.ayahNumber}>{ayah.ayahNumber}</option>) : null
@@ -99,14 +100,24 @@ export default function InputSection(
                 </div>
             </div>
             <div className="buttons">
-                <button className="main-btn" onClick={nextNumber}>{
-                    numberList.length
-                        ? text.generateBtn.next
-                        : text.generateBtn.generate
-                }</button>
-                {showNextSurahButton && <button className="main-btn" onClick={nextSurah}>
-                    {text.nextSurahBtn}
-                </button>}
+                <button
+                    className={`main-btn ${isFetching ? "disabled" : ""}`}
+                    onClick={nextNumber}
+                    disabled={isFetching}>{
+                        numberList.length
+                            ? text.generateBtn.next
+                            : text.generateBtn.generate
+                    }</button>
+                {showNextSurahButton &&
+                    <button
+                        className={`main-btn ${isFetching ? "disabled" : ""}`}
+                        onClick={(e) => {
+                            nextSurah()
+                            setShowNextSurahButton(false)
+                        }}
+                        disabled={isFetching}>
+                        {text.nextSurahBtn}
+                    </button>}
             </div>
         </section >
     )

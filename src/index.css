@@ -346,6 +346,12 @@ option {
   background-color: var(--secondary-button-active-color);
 }
 
+.main-btn.disabled {
+  background-color: var(--line-color);
+  color: var(--sub-font-color);
+  cursor: not-allowed;
+}
+
 .buttons {
   display: flex;
   justify-content: center;

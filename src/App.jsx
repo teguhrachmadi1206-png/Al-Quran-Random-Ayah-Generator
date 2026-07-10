@@ -20,9 +20,11 @@ function App() {
   const [showNextSurahButton, setShowNextSurahButton] = useState(false)
   const [noRepeat, setNoRepeat] = useState(true)
   const [detailShowed, setDetailShowed] = useState({ arabic: false, latin: false, translation: false })
+  const [isFetching, setIsFetching] = useState(false)
   const text = elements[language]
 
   useEffect(() => {
+    setIsFetching(true)
     if (language === "english") {
       fetch("https://equran.id/api/en/surah")
         .then(res => res.json())
@@ -34,6 +36,7 @@ function App() {
               'title': surah.englishName
             }))
           setAllQuranData(numberAndTitle)
+          setIsFetching(false)
         })
     } else if (language === "indonesia") {
       fetch("https://equran.id/api/v2/surat")
@@ -46,11 +49,13 @@ function App() {
               'title': surah.namaLatin
             }))
           setAllQuranData(numberAndTitle)
+          setIsFetching(false)
         })
     }
   }, [language])
 
   useEffect(() => {
+    setIsFetching(true)
     if (language === "english") {
       chosenSurah &&
         fetch(`https://equran.id/api/en/surah/${chosenSurah}`)
@@ -72,6 +77,7 @@ function App() {
             detailSurah['number'] = data.data.number
             detailSurah['ayahs'] = detailAyah
             setSurahData(detailSurah)
+            setIsFetching(false)
           })
     } else if (language === "indonesia") {
       chosenSurah &&
@@ -94,6 +100,7 @@ function App() {
             detailSurah['number'] = data.data.nomor
             detailSurah['ayahs'] = detailAyah
             setSurahData(detailSurah)
+            setIsFetching(false)
           })
     }
     resetState()
@@ -153,10 +160,6 @@ function App() {
     })
   }
 
-  function test() {
-    console.log(generatedList)
-  }
-
   return (
     <>
       <Header
@@ -178,6 +181,7 @@ function App() {
             setChosenSurah={setChosenSurah}
             showNextSurahButton={showNextSurahButton}
             setShowNextSurahButton={setShowNextSurahButton}
+            isFetching={isFetching}
           />}
         <DisplaySection
           language={language}
@@ -202,7 +206,6 @@ function App() {
           close={() => setShowOptions(false)} />}
         {message && <p className="message">{message}</p>}
       </main >
-      <button onClick={test}>test</button>
     </>
   )
 }
