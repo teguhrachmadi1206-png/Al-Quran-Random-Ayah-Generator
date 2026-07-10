@@ -96,6 +96,7 @@ function App() {
             setSurahData(detailSurah)
           })
     }
+    resetState()
   }, [chosenSurah, language])
 
   useEffect(() => {
@@ -152,6 +153,10 @@ function App() {
     })
   }
 
+  function test() {
+    console.log(generatedList)
+  }
+
   return (
     <>
       <Header
@@ -185,7 +190,7 @@ function App() {
           noRepeat={noRepeat}
         />
         <DetailSection
-          surah={surahData}
+          surahData={surahData}
           currentNumber={currentNumber}
           language={language}
           detailShowed={detailShowed}
@@ -197,6 +202,7 @@ function App() {
           close={() => setShowOptions(false)} />}
         {message && <p className="message">{message}</p>}
       </main >
+      <button onClick={test}>test</button>
     </>
   )
 }

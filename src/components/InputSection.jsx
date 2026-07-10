@@ -43,7 +43,7 @@ export default function InputSection(
         const randomList = []
         const length = secondNum - firstNum + 1
         while (randomList.length !== length) {
-            const random = Math.floor(Math.random() * (secondNum - firstNum + 1) + firstNum)
+            const random = Number(Math.floor(Math.random() * (secondNum - firstNum + 1))) + Number(firstNum)
             if (!randomList.includes(random)) {
                 randomList.push(random)
             }

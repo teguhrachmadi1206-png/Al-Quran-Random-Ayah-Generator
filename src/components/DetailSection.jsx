@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react"
 
 export default function DetailSection(
     {
-        surah,
+        surahData,
         currentNumber,
         language,
         detailShowed,
@@ -18,6 +18,7 @@ export default function DetailSection(
     const latinStartRef = useRef(null)
     const translationStartRef = useRef(null)
     const audioRef = useRef(null)
+    const audioSrc = currentNumber && surahData && surahData.ayahs[currentNumber - 1].ayahAudio
 
     useEffect(() => {
         if (showTranslation) {
@@ -38,10 +39,10 @@ export default function DetailSection(
     }, [showArabic])
 
     useEffect(() => {
-        if (surah) {
+        if (surahData) {
             setIsAudioPlayed(false)
         }
-    }, [currentNumber])
+    }, [currentNumber, surahData])
 
     function toggleShowArabic() {
         if (currentNumber) {
@@ -89,7 +90,7 @@ export default function DetailSection(
     }
 
     function toggleAudio() {
-        if (isAudioPlayed) {
+        if (audioSrc && isAudioPlayed) {
             audioRef.current.pause()
             audioRef.current.currentTime = 0
         } else {
@@ -98,13 +99,9 @@ export default function DetailSection(
         setIsAudioPlayed(prev => !prev)
     }
 
-    function test() {
-        console.log(surah.ayahs[currentNumber - 1])
-    }
-
     return (
         <section className="detail-section">
-            {surah?.ayahs && currentNumber && <audio ref={audioRef} src={surah.ayahs[currentNumber - 1].ayahAudio} onEnded={() => setIsAudioPlayed(false)} />}
+            {audioSrc && currentNumber && <audio ref={audioRef} src={audioSrc} onEnded={() => setIsAudioPlayed(false)} />}
             <h2 className="sub-title">{text.subTitle3}</h2>
             <div className="display-ayah">
                 <div className="detail-btn-container">
@@ -113,24 +110,23 @@ export default function DetailSection(
                     <button className="main-btn toggle" onClick={toggleShowTranslation}>{showTranslation ? text.translationBtn.hide : text.translationBtn.show}</button>
                     <button className="main-btn toggle all" onClick={toggleShowAll}>{(showArabic || showLatin || showTranslation) ? text.showAllBtn.hide : text.showAllBtn.show}</button>
                 </div>
-                {surah && <div className="show-detail">
+                {surahData && <div className="show-detail">
                     <div className="detail-title-row">
                         {(showArabic || showLatin || showTranslation) && <h3 className="detail-title" >
-                            {surah.number}. {surah.title} ({surah.titleTranslation}): {currentNumber}
+                            <span>{surahData.number}.</span><span>{surahData.title} ({surahData.titleTranslation}): {currentNumber}</span>
                         </h3>}
                         {currentNumber && showArabic && <button className='audio-button' onClick={toggleAudio}>{isAudioPlayed ? "◼" : "▶"} Audio</button>}
                     </div>
                     {currentNumber && <div className="show-ayah">
                         <span ref={arabicStartRef}></span>
-                        {showArabic && <p className="arabic-ayah" >{surah.ayahs[currentNumber - 1].ayahArabic}</p>}
+                        {showArabic && <p className="arabic-ayah" >{surahData.ayahs[currentNumber - 1].ayahArabic}</p>}
                         <span ref={latinStartRef}></span>
-                        {showLatin && <p className="latin-ayah" >{surah.ayahs[currentNumber - 1].ayahLatin} ({currentNumber})</p>}
+                        {showLatin && <p className="latin-ayah" >{surahData.ayahs[currentNumber - 1].ayahLatin} ({currentNumber})</p>}
                         <span ref={translationStartRef}></span>
-                        {showTranslation && <p className="translate-ayah" >{surah.ayahs[currentNumber - 1].ayahTranslation} ({currentNumber})</p>}
+                        {showTranslation && <p className="translate-ayah" >{surahData.ayahs[currentNumber - 1].ayahTranslation} ({currentNumber})</p>}
                     </div>}
                 </div>}
             </div>
-            {/* <button onClick={toggleAudio}>test</button> */}
         </section>
     )
 }
