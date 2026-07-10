@@ -19,7 +19,7 @@ export default function DetailSection(
     const translationStartRef = useRef(null)
     const audioRef = useRef(null)
     const audioSrc = currentNumber && surahData && surahData.ayahs[currentNumber - 1].ayahAudio
-    const formattedArabic = currentNumber && surahData && surahData.ayahs[currentNumber - 1].ayahArabic.replaceAll("۞", "").replaceAll("۩", "")
+    const formattedArabic = currentNumber && surahData && surahData.ayahs[currentNumber - 1].ayahArabic.replace(/[۞۩ࣖ۔ࣖۗ]/g, "")
 
     useEffect(() => {
         if (showTranslation) {
