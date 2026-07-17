@@ -25,7 +25,7 @@ export default function InputSection(
     const text = elements[language]
 
     useEffect(() => {
-        setGeneratedList(generateNumberList(firstNumber, secondNumber))
+        setGeneratedList(generateNumberList(Number(firstNumber), Number(secondNumber)))
         resetState()
     }, [firstNumber, secondNumber, surahData])
 
